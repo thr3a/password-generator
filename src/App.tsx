@@ -1,7 +1,6 @@
 import '@mantine/core/styles.css';
 import { Container, MantineProvider, Title } from '@mantine/core';
-import { ColorSchemeToggle } from './ColorSchemeToggle/ColorSchemeToggle';
-import { Welcome } from './Welcome/Welcome';
+import { PasswordGenerator } from './PasswordGenerator';
 import { theme } from './theme';
 
 export default function App() {
@@ -9,13 +8,12 @@ export default function App() {
     <MantineProvider theme={theme}>
       <Container id='container' maw={400}>
         <Title mt={'sm'} order={2}>
-          Mantine Vite template
+          パスワード一括生成ツール
         </Title>
         <Title order={6} mb={'sm'} c={'dimmed'}>
-          Mantine Vite template
+          安全なパスワードを一括で作成します。
         </Title>
-        <Welcome />
-        <ColorSchemeToggle />
+        <PasswordGenerator />
       </Container>
     </MantineProvider>
   );
