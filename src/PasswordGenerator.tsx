@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, Group, Paper, Select, Stack, Text, rem } from '@mantine/core';
+import { Box, Button, Checkbox, Flex, Group, Input, Paper, Select, Stack, Text, rem } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useCallback, useState } from 'react';
 import { ButtonCopy } from './ButtonCopy';
@@ -89,7 +89,6 @@ export function PasswordGenerator() {
             {...form.getInputProps('length')}
             defaultValue='8'
             allowDeselect={false}
-            withAsterisk
           />
           <Group gap='xs'>
             <Checkbox label='小文字 (a-z)' {...form.getInputProps('lower', { type: 'checkbox' })} />
@@ -114,16 +113,25 @@ export function PasswordGenerator() {
           <Stack gap={4}>
             {passwords.map((pw, i) => (
               <Flex key={i} align='center' gap='xs' justify='space-between'>
-                <Text
+                <ButtonCopy content={pw} />
+                <Input
+                  type='text'
+                  value={pw}
+                  readOnly
                   size='md'
                   style={{
                     fontFamily: 'monospace',
-                    letterSpacing: rem(1)
+                    letterSpacing: rem(1),
+                    flex: 1
                   }}
-                >
-                  {pw}
-                </Text>
-                <ButtonCopy content={pw} />
+                  styles={{
+                    input: {
+                      fontFamily: 'monospace',
+                      letterSpacing: rem(1)
+                    }
+                  }}
+                  variant='filled'
+                />
               </Flex>
             ))}
           </Stack>

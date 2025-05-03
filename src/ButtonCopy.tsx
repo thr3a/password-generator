@@ -18,6 +18,7 @@ export function ButtonCopy({
 
   return (
     <Button
+      variant='light'
       onClick={() => clipboard.copy(content)}
       color={clipboard.copied ? 'teal' : 'blue'}
       {...(label ? { rightSection: icon } : {})}
