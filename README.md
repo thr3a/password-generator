@@ -4,6 +4,8 @@
 node --import tsx --env-file .env --watch ./src/scripts/hello.ts
 ```
 
+# turn1
+
 パスワード一括生成ツールを作成したい
 
 フォームで設定できるパラメーター
@@ -29,6 +31,8 @@ export const generatePassword = (length: number): string => {
 };
 ```
 
+# turn2
+
 パスワードがワンクリックでコピーできるようにしてほしい
 mantineのCopyButtonを使ってパスワードの右側にコピーボタン
 クリックしたらその行のパスワードがコピーされる
@@ -37,8 +41,8 @@ mantineのCopyButtonを使ってパスワードの右側にコピーボタン
 それをクリックすると10個全部が10行としてコピーされる
 
 
-src/ButtonCopy.tsxを修正してくれ
-1. いまだとlabelが必須になっているが、ない場合も許容したい
-ない場合はアイコンだけ labelで文字列渡されたらそれも表示する つまりiconはrightSectionへいく
+# turn3
 
-2. 実装が冗長なので共通化するようにリファクタリングしてほしい
+src/PasswordGenerator.tsxのパスワード生成部分のロジックをtsに切り出して
+vitestでパスワード生成の部分のみのてすとを実装して
+必要なライブラリがあればインストールしていいよ
