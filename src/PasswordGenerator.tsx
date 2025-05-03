@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, Flex, Group, Paper, Select, Stack, Text, rem } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ButtonCopy } from './ButtonCopy';
 
 // パスワード生成ロジック
@@ -59,18 +59,18 @@ export function PasswordGenerator() {
     }
   });
 
-  const handleGenerate = () => {
+  const handleGenerate = useCallback(() => {
     const charset = getCharset(form.values);
     const len = Number(form.values.length);
-    if (!charset || isNaN(len)) return;
+    if (!charset || Number.isNaN(len)) return;
     const result = Array.from({ length: 10 }, () => generatePassword(len, charset));
     setPasswords(result);
-  };
+  }, [form.values]);
 
   // 初回マウント時に自動生成
   useEffect(() => {
     handleGenerate();
-  }, []);
+  }, [handleGenerate]);
 
   return (
     <Paper withBorder p='md' mt='md'>
