@@ -1,16 +1,7 @@
-import { useState } from 'react';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Group,
-  Paper,
-  Select,
-  Stack,
-  Text,
-  rem
-} from '@mantine/core';
+import { Box, Button, Checkbox, Flex, Group, Paper, Select, Stack, Text, rem } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useState } from 'react';
+import { ButtonCopy } from './ButtonCopy';
 
 // パスワード生成ロジック
 const LOWER = 'abcdefghijklmnopqrstuvwxyz';
@@ -62,12 +53,9 @@ export function PasswordGenerator() {
       excludeSimilar: false
     },
     validate: {
-      length: (v: string) =>
-        Number(v) >= 4 && Number(v) <= 20 ? null : '4〜20の範囲で選択してください',
+      length: (v: string) => (Number(v) >= 4 && Number(v) <= 20 ? null : '4〜20の範囲で選択してください'),
       lower: (_: boolean, values: FormValues) =>
-        values.lower || values.upper || values.number || values.symbol
-          ? null
-          : '最低1つは選択してください'
+        values.lower || values.upper || values.number || values.symbol ? null : '最低1つは選択してください'
     }
   });
 
@@ -75,16 +63,13 @@ export function PasswordGenerator() {
     const charset = getCharset(form.values);
     const len = Number(form.values.length);
     if (!charset || isNaN(len)) return;
-    const result = Array.from({ length: 10 }, () =>
-      generatePassword(len, charset)
-    );
+    const result = Array.from({ length: 10 }, () => generatePassword(len, charset));
     setPasswords(result);
   };
 
   // 初回マウント時に自動生成
   useEffect(() => {
     handleGenerate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -107,22 +92,10 @@ export function PasswordGenerator() {
             withAsterisk
           />
           <Group gap='xs'>
-            <Checkbox
-              label='小文字 (a-z)'
-              {...form.getInputProps('lower', { type: 'checkbox' })}
-            />
-            <Checkbox
-              label='大文字 (A-Z)'
-              {...form.getInputProps('upper', { type: 'checkbox' })}
-            />
-            <Checkbox
-              label='数字 (0-9)'
-              {...form.getInputProps('number', { type: 'checkbox' })}
-            />
-            <Checkbox
-              label='記号 (!@#$%^&*)'
-              {...form.getInputProps('symbol', { type: 'checkbox' })}
-            />
+            <Checkbox label='小文字 (a-z)' {...form.getInputProps('lower', { type: 'checkbox' })} />
+            <Checkbox label='大文字 (A-Z)' {...form.getInputProps('upper', { type: 'checkbox' })} />
+            <Checkbox label='数字 (0-9)' {...form.getInputProps('number', { type: 'checkbox' })} />
+            <Checkbox label='記号 (!@#$%^&*)' {...form.getInputProps('symbol', { type: 'checkbox' })} />
           </Group>
           <Checkbox
             label='似た文字を除外 (1, l, I, 0, O)'
@@ -140,18 +113,23 @@ export function PasswordGenerator() {
           </Text>
           <Stack gap={4}>
             {passwords.map((pw, i) => (
-              <Text
-                key={i}
-                size='md'
-                style={{
-                  fontFamily: 'monospace',
-                  letterSpacing: rem(1)
-                }}
-              >
-                {pw}
-              </Text>
+              <Flex key={i} align='center' gap='xs' justify='space-between'>
+                <Text
+                  size='md'
+                  style={{
+                    fontFamily: 'monospace',
+                    letterSpacing: rem(1)
+                  }}
+                >
+                  {pw}
+                </Text>
+                <ButtonCopy content={pw} />
+              </Flex>
             ))}
           </Stack>
+          <Flex justify='flex-end' mt='md'>
+            <ButtonCopy content={passwords.join('\n')} label='すべてコピー' />
+          </Flex>
         </Box>
       )}
     </Paper>
