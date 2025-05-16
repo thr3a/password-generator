@@ -50,7 +50,7 @@ export function PasswordGenerator() {
       upper: true,
       number: true,
       symbol: false,
-      excludeSimilar: false
+      excludeSimilar: true
     },
     validate: {
       length: (v: string) => (Number(v) >= 4 && Number(v) <= 20 ? null : '4〜20の範囲で選択してください'),
