@@ -40,18 +40,20 @@ function generatePassword(length: number, charset: string): string {
 
 import { useEffect } from 'react';
 
+const initialFormValues: FormValues = {
+  length: '8',
+  lower: true,
+  upper: true,
+  number: true,
+  symbol: false,
+  excludeSimilar: true
+};
+
 export function PasswordGenerator() {
   const [passwords, setPasswords] = useState<string[]>([]);
 
   const form = useForm<FormValues>({
-    initialValues: {
-      length: '8',
-      lower: true,
-      upper: true,
-      number: true,
-      symbol: false,
-      excludeSimilar: true
-    },
+    initialValues: initialFormValues,
     validate: {
       length: (v: string) => (Number(v) >= 4 && Number(v) <= 20 ? null : '4〜20の範囲で選択してください'),
       lower: (_: boolean, values: FormValues) =>
@@ -59,24 +61,32 @@ export function PasswordGenerator() {
     }
   });
 
-  const handleGenerate = useCallback(() => {
-    const charset = getCharset(form.values);
-    const len = Number(form.values.length);
-    if (!charset || Number.isNaN(len)) return;
+  const handleGenerateOnButtonClick = useCallback(() => {
+    const currentValues = form.values;
+    const charset = getCharset(currentValues);
+    const len = Number(currentValues.length);
+    // フォームのバリデーションにより、長さは4から20の範囲であるべき
+    // charsetが空の場合は generatePassword が空文字を返すことで対応
+    if (!charset || Number.isNaN(len) || len < 4) return; // 最小長チェック
     const result = Array.from({ length: 10 }, () => generatePassword(len, charset));
     setPasswords(result);
   }, [form.values]);
 
   // 初回マウント時に自動生成
   useEffect(() => {
-    handleGenerate();
-  }, [handleGenerate]);
+    const charset = getCharset(initialFormValues);
+    const len = Number(initialFormValues.length);
+    // フォームのバリデーションにより、長さは4から20の範囲であるべき
+    if (!charset || Number.isNaN(len) || len < 4) return; // 最小長チェック
+    const result = Array.from({ length: 10 }, () => generatePassword(len, charset));
+    setPasswords(result);
+  }, []); // initialFormValues が外部で変更される可能性がなければ空で良い
 
   return (
     <Paper withBorder p='md' mt='md'>
       <form
         onSubmit={form.onSubmit(() => {
-          handleGenerate();
+          handleGenerateOnButtonClick();
         })}
       >
         <Stack gap='xs'>
